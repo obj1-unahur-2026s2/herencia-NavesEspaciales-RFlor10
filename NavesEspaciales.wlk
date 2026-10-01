@@ -83,4 +83,5 @@ class NaveDeCombate inherits NaveEspacial{
     method ultimoMensajeEmitido() = mensajesEmitidos.last()
     method emitioMensaje(mensaje) = mensajesEmitidos.contains(mensaje)
     method esEscueta() = mensajesEmitidos.size()<=30
+    
 }
