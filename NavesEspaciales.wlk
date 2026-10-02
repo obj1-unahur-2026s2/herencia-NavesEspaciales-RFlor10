@@ -1,6 +1,8 @@
 class NaveEspacial {
     var velocidad = 0 //km/seg
     var direccion = 0 //-10 alejado ; 0 rodeando ; 10 acercando
+    var combustible = 0
+
 
     method direccion()= direccion//.between(-10, 10)
     method acelerar(cuanto){
@@ -24,6 +26,17 @@ class NaveEspacial {
     method alejarseUnPocoDelSol(){
         direccion = (-10).max(direccion - 1)
     }
+
+    method prepararViaje() 
+
+    method cargarCombustible(litros){
+        combustible += litros
+    }
+
+    method descargarCombustible(litros){
+        combustible -= litros
+    }
+
 }
 
 class NaveBaliza inherits NaveEspacial{
@@ -31,6 +44,12 @@ class NaveBaliza inherits NaveEspacial{
     method cambiarColorDeBaliza(colorNuevo){
         baliza = colorNuevo
     }
+
+   override method prepararViaje() {
+    self.cambiarColorDeBaliza("verde")
+    self.ponerseParaleloAlSol()
+    self.cargarCombustible(30000)
+   }
 
 }
 
@@ -51,6 +70,13 @@ class NaveDePasajeros inherits NaveEspacial{
     }
     method descargarRacionesDeBebida(cantidad) {
         0.max(racionesDeBebida - cantidad)
+    }
+
+    override method prepararViaje() {
+        self.cargarRacionesDeComida(4 * pasajeros)
+        self.cargarRacionesDeBebida(6 * pasajeros)
+        self.acercarseUnPocoAlSol()
+        self.cargarCombustible(30000)
     }
 }
 
@@ -78,10 +104,17 @@ class NaveDeCombate inherits NaveEspacial{
     method emitirMensaje(mensaje){
         mensajesEmitidos.add(mensaje)
     }
-    method mensajesEmitidos() = mensajesEmitidos.count()
+    method mensajesEmitidos() = mensajesEmitidos.size()
     method primerMensajeEmitido() = mensajesEmitidos.first()
     method ultimoMensajeEmitido() = mensajesEmitidos.last()
     method emitioMensaje(mensaje) = mensajesEmitidos.contains(mensaje)
-    method esEscueta() = mensajesEmitidos.size()<=30
+    method esEscueta() = mensajesEmitidos.all({m => m.lenght() <=30 })
     
+    override method prepararViaje() {
+        self.ponerseInvisible()
+        self.emitirMensaje("Saliendo en misión")
+        self.cargarCombustible(30000)
+        self.acelerar(5000)
+        self.acelerar(15000)
+    }
 }
